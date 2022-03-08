@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 import BodyText from "../components/BodyText";
+import MainButton from "../components/MainButton";
 import TitleText from "../components/TitleText";
 import Colors from "../constants/colors";
 
@@ -18,7 +19,7 @@ const GameOver = props => {
 					number <Text style={styles.highlight}>{props.userNumber}</Text>.
 				</BodyText>
 			</View>
-			<Button title="NEW GAME" onPress={props.onNewGame} />
+			<MainButton onPress={props.onNewGame}>NEW GAME</MainButton>
 		</View>
 	);
 };
