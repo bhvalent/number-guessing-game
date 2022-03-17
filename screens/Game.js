@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, StyleSheet, View, FlatList, Dimensions } from 'react-native';
+import { Alert, StyleSheet, View, FlatList, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import BodyText from '../components/BodyText';
@@ -64,15 +64,14 @@ const Game = (props) => {
 	}
 
 	let guessListContainerStyle = styles.guessListContainer;
-	if (Dimensions.get('window').width < 350) {
+	if (useWindowDimensions().width < 350) {
 		guessListContainerStyle = styles.guessListContainerBig;
 	}
 
-	return (
-		<View style={styles.screen}>
-			<TitleText>Opponent's Guess</TitleText>
+	let gameControls = (
+		<>
 			<NumberContainer>{currentGuess}</NumberContainer>
-			<Card style={styles.btnContainer}>
+			<Card style={{...styles.btnContainer, marginTop: useWindowDimensions().height > 600 ? 20 : 5 }}>
 				<MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
 					<Ionicons name="md-remove" size={24} color="white" />
 				</MainButton>
@@ -80,6 +79,27 @@ const Game = (props) => {
 					<Ionicons name="md-add" size={24} color="white" />
 				</MainButton>
 			</Card>
+		</>
+	);
+
+	if (useWindowDimensions().height < 500) {
+		gameControls = (
+			<View style={styles.controll}>
+				<MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+					<Ionicons name="md-remove" size={24} color="white" />
+				</MainButton>
+				<NumberContainer>{currentGuess}</NumberContainer>
+				<MainButton onPress={nextGuessHandler.bind(this, 'greater')}>
+					<Ionicons name="md-add" size={24} color="white" />
+				</MainButton>
+			</View>
+		);
+	}
+
+	return (
+		<View style={styles.screen}>
+			<TitleText>Opponent's Guess</TitleText>
+			{gameControls}
 			<View style={guessListContainerStyle}>
 				<FlatList
 					keyExtractor={(item) => item}
@@ -90,6 +110,7 @@ const Game = (props) => {
 			</View>
 		</View>
 	);
+
 };
 
 const styles = StyleSheet.create({
@@ -101,12 +122,11 @@ const styles = StyleSheet.create({
 	btnContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		marginTop: Dimensions.get('window').height > 600 ? 20 : 5,
 		width: 400,
 		maxWidth: '90%',
 	},
 	guessListContainer: {
-		width:'60%',
+		width: '60%',
 		flex: 1
 	},
 	guessListContainerBig: {
@@ -126,6 +146,12 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 		backgroundColor: 'white',
 		width: '100%'
+	},
+	controll: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		width: '80%',
+		alignItems: 'center'
 	}
 });
 

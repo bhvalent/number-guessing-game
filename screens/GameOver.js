@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
+import { Image, StyleSheet, Text, View, Dimensions, ScrollView, useWindowDimensions } from "react-native";
 
 import BodyText from "../components/BodyText";
 import MainButton from "../components/MainButton";
@@ -11,11 +11,17 @@ const GameOver = props => {
 		<ScrollView>
 			<View style={styles.screen}>
 				<TitleText>The Game is Over!</TitleText>
-				<View style={styles.imgContainer}>
+				<View style={{
+					...styles.imgContainer,
+					width: useWindowDimensions().width * 0.7,
+					height: useWindowDimensions().width * 0.7,
+					borderRadius: (useWindowDimensions().width * 0.7) / 2,
+					marginVertical: useWindowDimensions().height / 30
+				}}>
 					<Image source={require('../assets/success.png')} style={styles.img} resizeMode="cover" />
 				</View>
-				<View style={styles.messageContainer}>
-					<BodyText style={styles.message}>
+				<View style={{...styles.messageContainer, marginVertical: useWindowDimensions().height / 60}}>
+					<BodyText style={{...styles.message, fontSize: useWindowDimensions().height < 400 ? 16 : 20}}>
 						Your phone needed <Text style={styles.highlight}>{props.guessRounds}</Text> rounds to guess the
 						number <Text style={styles.highlight}>{props.userNumber}</Text>.
 					</BodyText>
@@ -30,32 +36,27 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingVertical: 10
 	},
 	img: {
 		width: '100%',
 		height: '100%'
 	},
 	imgContainer: {
-		width: Dimensions.get('window').width * 0.7,
-		height: Dimensions.get('window').width * 0.7,
-		borderRadius: Dimensions.get('window').width * 0.7 / 2,
 		borderWidth: 3,
 		borderColor: 'black',
-		overflow: 'hidden',
-		marginVertical: Dimensions.get('window').height / 30
+		overflow: 'hidden'
 	},
 	highlight: {
 		color: Colors.primary,
 		fontFamily: 'open-sans-bold'
 	},
 	messageContainer: {
-		marginHorizontal: 30,
-		marginVertical: Dimensions.get('window').height / 60
+		marginHorizontal: 30
 	},
 	message: {
-		textAlign: 'center',
-		fontSize: Dimensions.get('window').height < 400 ? 16 : 20
+		textAlign: 'center'
 	}
 });
 
