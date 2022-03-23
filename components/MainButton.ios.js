@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "../constants/colors";
 
 const MainButton = props => {
+
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={styles.btn}>
